@@ -2,7 +2,7 @@ C++ Database
 ============
 An OOP, single-header, encapsulation of sqlite3.
 
-You must obviously install the sqlite3 development library to compile it:
+You must obviously install the sqlite3 development files to compile with it:
 ```
 $ sudo apt-get install sqlite3 libsqlite3-dev
 ```
@@ -12,7 +12,7 @@ Compile with:
 $ g++ SomeSourceFile.cpp -lsqlite3
 ```
 
-## Contents
+## Contents
 1. [Database](#database)
 2. [Statement](#statement)
 3. [Row](#row)
