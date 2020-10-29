@@ -35,14 +35,14 @@ db.exec("CREATE TABLE `users`(`id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(2
 ```
 
 ### Database::query()
-Applys a callback to a set of results
+Applies a callback to a set of results
 ```C++
 db.query("SELECT `id`, `name` FROM `users`", [](SQL::Row &row) {
 	std::cout << "User #" << row["id"].text() << ": " << row["name"].text() << std::endl;
 	return true;
 });
 ```
-Return false in your callback to stop the looping.
+>Return false in your callback to stop the looping.
 
 ### Database::lastInsertId()
 Gets the last inserted row id
@@ -59,7 +59,7 @@ SQL::Statement stmt = db.prepare("INSERT INTO `users`(`name`, `age`) VALUES ('Jo
 ## Statement
 
 ### Statement::operator bool()
-Checks if a statement has been constructed successfuly
+Checks if a statement has been constructed successfully
 ```C++
 SQL::Statement stmt = db.prepare("Hello, food ?");
 if (!stmt) {
@@ -97,11 +97,13 @@ bool success = stmt.execute("John", 23);
 ```
 
 ### Statement::fetch()
-Fetch rows one at a time from a statement
+Fetches rows one at a time from a statement
 ```C++
 SQL::Statement stmt = db.prepare("SELECT * FROM `users` WHERE `age` > ?");
-if (!stmt.execute(18))
+if (!stmt.execute(18)) {
 	// exit, throw, return false...
+}
+
 Row user;
 while (stmt.fetch(user))
 	std::cout << user["name"].text() << " is major" << std::endl;
@@ -111,8 +113,10 @@ while (stmt.fetch(user))
 Fetches **all** results from a statement
 ```C++
 SQL::Statement stmt = db.prepare("SELECT * FROM `users` WHERE `age` > ?");
-if (!stmt.execute(18))
+if (!stmt.execute(18)) {
 	// exit, throw, return false...
+}
+
 std::vector<Row> users = stmt.fetchAll();
 for (auto user : users)
 	std::cout << user["name"].text() << " is major" << std::endl;
@@ -124,13 +128,15 @@ Resets a statement for re-use
 Row user;
 SQL::Statement stmt = db.prepare("SELECT * FROM `users`");
 
-while (stmt.fetch(user))
+while (stmt.fetch(user)) {
 	// We iterate on `users`
+}
 
-stmt.reset(); /// Let's go for another round
+stmt.reset(); // Let's go for another round
 
-while (stmt.fetch(user))
+while (stmt.fetch(user)) {
 	// We re-iterate on `users`
+}
 ```
 
 ### Statement::colCount()
@@ -201,4 +207,4 @@ struct Blob
 	std::size_t size;
 };
 ```
-Its goal is simply to contain an untyped set of bytes and to prevent too much arguments in the methods' signatures (e.g. no third parameter for [`Statement::bind()`](#statementbind) when given a `const void *`).
+Its goal is to contain an untyped set of bytes and to prevent too much arguments in the methods' signatures (e.g. no third parameter for [`Statement::bind()`](#statementbind) when given a `const void*`).
